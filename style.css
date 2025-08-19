@@ -1,77 +1,176 @@
-const numeroSenha = document.querySelector('.parametro-senha__texto');
-let tamanhoSenha = 12;
-numeroSenha.textContent = tamanhoSenha;
-const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
-const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
-const numeros = '0123456789';
-const simbolos = '!@%*?';
-const botoes = document.querySelectorAll('.parametro-senha__botao');
-const campoSenha = document.querySelector('#campo-senha');
-const checkbox = document.querySelectorAll('.checkbox');
-const forcaSenha = document.querySelector('.forca');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap');
 
-botoes[0].onclick = diminuiTamanho;
-botoes[1].onclick = aumentaTamanho;
-
-function diminuiTamanho() {
-    if (tamanhoSenha > 1) {
-        // tamanhoSenha = tamanhoSenha-1;
-        tamanhoSenha--;
-    }
-    numeroSenha.textContent = tamanhoSenha;
-    geraSenha();
-}
-function aumentaTamanho() {
-    if (tamanhoSenha < 20) {
-        // tamanhoSenha = tamanhoSenha+1;
-        tamanhoSenha++;
-    }
-    numeroSenha.textContent = tamanhoSenha;
-    geraSenha();
+:root {
+    --branco: #F1F1F1;
+    --cor-de-fundo: #121212;        /* Preto carvão moderno */
+    --fundo-senha: #1E1E1E;         /* Tom intermediário */
+    --fundo-texto: #2A2A2A;         /* Mais claro, mas ainda neutro */
+    --borda: #00FF85;               /* Verde neon para contraste */
+    --roboto: 'Roboto', sans-serif;
+    --roboto-mono: 'Roboto Mono', monospace;
+    --neon-verde: #00FF85;
+    --neon-roxo: #9D00FF;
+    --vermelho-alerta: #FF0033;
+    --amarelo-alerta: #FFD700;
 }
 
-for (i = 0; i < checkbox.length; i++) {
-    checkbox[i].onclick = geraSenha;
+* {
+    font-weight: 400;
 }
 
-geraSenha();
-
-function geraSenha() {
-    let alfabeto = '';
-    if (checkbox[0].checked) {
-        alfabeto = alfabeto + letrasMaiusculas;
-    }
-    if (checkbox[1].checked) {
-        alfabeto = alfabeto + letrasMinusculas;
-    }
-    if (checkbox[2].checked) {
-        alfabeto = alfabeto + numeros;
-    }
-    if (checkbox[3].checked) {
-        alfabeto = alfabeto + simbolos;
-    }
-    let senha = '';
-    for (let i = 0; i < tamanhoSenha; i++) {
-        let numeroAleatorio = Math.random() * alfabeto.length;
-        numeroAleatorio = Math.floor(numeroAleatorio);
-        senha = senha + alfabeto[numeroAleatorio];
-    }
-    campoSenha.value = senha;
-    classificaSenha(alfabeto.length);
-
+body {
+    color: var(--branco);
+    background-color: var(--cor-de-fundo);
+    font-family: var(--roboto);
 }
 
-function classificaSenha(tamanhoAlfabeto) {
-    let entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
-    console.log(entropia);
-    forcaSenha.classList.remove('fraca', 'media', 'forte');
-    if (entropia > 57) {
-        forcaSenha.classList.add('forte');
-    } else if (entropia > 35 && entropia < 57) {
-        forcaSenha.classList.add('media');
-    } else if (entropia <= 35) {
-        forcaSenha.classList.add('fraca');
-    } 
-    const valorEntropia = document.querySelector('.entropia');
-    valorEntropia.textContent = "Um computador pode levar até " + Math.floor(2 ** entropia / (100e6 * 60 * 60 * 24)) + " dias para descobrir essa senha.";
+.titulo-principal {
+    font-family: var(--roboto-mono);
+    font-size: 32px;
+    color: var(--neon-azul);
+}
+
+.titulo-secundario {
+    font-size: 24px;
+    color: var(--neon-verde);
+}
+
+.conteudo-titulo {
+    text-align: center;
+    margin-top: 80px;
+}
+
+.conteudo-senha {
+    margin-top: 80px;
+    background: var(--fundo-senha);
+    padding: 24px;
+    border-bottom: 6px solid var(--borda);
+    box-shadow: 0 0 10px var(--neon-azul);
+}
+
+#campo-senha {
+    background-color: var(--fundo-senha);
+    border: none;
+    color: var(--neon-verde);
+    font-family: var(--roboto-mono);
+    font-size: 40px;
+    width: 70%;
+}
+
+#campo-senha:focus {
+    outline: 2px solid var(--neon-azul);
+}
+
+.conteudo {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.parametro {
+    background-color: var(--fundo-texto);
+    border: 2px solid var(--borda);
+    margin-top: 32px;
+    padding: 24px;
+    box-shadow: 0 0 6px var(--neon-roxo);
+}
+
+.parametro-titulo {
+    font-family: var(--roboto-mono);
+    font-size: 28px;
+    color: var(--neon-roxo);
+}
+
+.parametro-senha__titulo {
+    font-size: 24px;
+    color: var(--neon-azul);
+}
+
+.parametro-coluna__senha {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.parametro-senha {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.parametro-senha-botoes {
+    display: flex;
+    justify-content: center;
+}
+
+.parametro-senha__botao {
+    background-color: transparent;
+    color: var(--neon-verde);
+    border: 2px solid var(--borda);
+    padding: 24px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.parametro-senha__botao:hover {
+    background-color: var(--borda);
+    color: #000;
+}
+
+.parametro-senha__texto {
+    padding: 24px;
+    border-top: 2px solid var(--borda);
+    border-bottom: 2px solid var(--borda);
+    margin: 0;
+    font-size: 24px;
+    color: var(--neon-verde);
+}
+
+label {
+    font-size: 20px;
+    color: var(--branco);
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--neon-verde);
+}
+
+.barra {
+    background-color: var(--fundo-senha);
+    height: 30px;
+    width: 100%;
+}
+
+.forca {
+    height: 30px;
+    position: relative;
+    bottom: 30px;
+}
+
+.fraca {
+    width: 25%;
+    background-color: var(--vermelho-alerta);
+}
+
+.media {
+    background-color: var(--amarelo-alerta);
+    width: 50%;
+}
+
+.forte {
+    background-color: var(--neon-verde);
+    width: 100%;
+}
+
+.parametro-senha-textos {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 768px) {
+    .parametro-coluna__senha {
+        flex-direction: row;
+    }
 }
